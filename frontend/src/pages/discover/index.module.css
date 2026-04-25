@@ -1,0 +1,42 @@
+.allUserProfile {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.userProfile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 18px;
+  background: white;
+  border-radius: 12px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+  box-shadow: 10px 10px 10px 0px rgba(0, 0, 0, 0.1);
+}
+
+.userProfile:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 18px rgba(0,0,0,0.15);
+}
+
+.userProfile img {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 12px;
+}
+
+.userProfile h1 {
+  font-size: 1.1rem;
+  margin: 6px 0 2px 0;
+  text-align: center;
+}
+
+.userProfile p {
+  font-size: 0.9rem;
+  color: #666;
+}

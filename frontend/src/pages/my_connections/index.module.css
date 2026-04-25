@@ -1,0 +1,118 @@
+/* Page container */
+.connectionsContainer {
+  max-width: 900px;
+  margin: auto;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Title */
+.title {
+  font-size: 2rem;
+  font-weight: 700;
+  text-align: center;
+  margin-left: 15px; /* moves title slightly to the right */
+}
+
+/* User card */
+.userCard {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  background: #ffffff;
+  padding: 1.2rem 1.5rem;
+  border-radius: 12px;
+  border: 1px solid #e6e6e6;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  transition: all 0.2s ease;
+}
+
+/* Hover effect */
+.userCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+}
+
+/* Profile image */
+.profileImage {
+  width: 66px;
+  height: 66px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* User info section */
+.userInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Name */
+.userInfo h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+/* Username */
+.userInfo p {
+  margin: 0;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .connectionsContainer {
+    padding: 1rem;
+  }
+
+  .userCard {
+    padding: 1rem;
+  }
+
+  .profileImage {
+    width: 55px;
+    height: 55px;
+  }
+}
+
+.connectedBtn{
+    margin-top: 10px;
+    font-weight: 700;
+    width: 17%;
+    padding-inline: 0.8rem;
+    padding-block: 0.3rem;
+    background: rgb(233, 234, 239);
+    outline: none;
+    color: rgb(61, 100, 199);
+    border-radius: 10px;
+    border-color: rgb(61, 100, 199);;
+    cursor: pointer;
+}
+
+.connectedLabel {
+    margin-top: 10px;
+    font-weight: 600;
+    color: rgb(61, 100, 199);
+    font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+  .title {
+    font-size: 1.6rem;
+    margin-left: 0;
+  }
+
+  .userCard {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .connectedBtn {
+    width: 100%;
+    text-align: center;
+  }
+}

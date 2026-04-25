@@ -1,0 +1,236 @@
+.profileOverlay{
+    position: absolute;
+    bottom: -55px;
+    left: 50px;
+    height:125px;
+    width:125px;
+    border-radius:50%;
+    overflow:hidden;
+    cursor:pointer;
+    background: black;
+}
+
+.profilePhoto{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    transition:0.3s;
+}
+
+.overlayText{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    color:rgb(248, 242, 242);
+    font-weight:bold;
+    font-size:14px;
+    opacity:0;
+    transition:0.3s;
+    pointer-events:none;
+}
+.fileInput{
+    display:none;
+}
+/* hover effect */
+
+.profileOverlay:hover .profilePhoto{
+    opacity:0.4;
+}
+
+.profileOverlay:hover .overlayText{
+    opacity:1;
+}
+
+.container{
+    padding: 1.2rem;
+    background: rgb(255, 255, 255);
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.backDropContainer{
+    height: 260px;          /* banner height like LinkedIn */
+    width: 100%;
+    background-image: url("https://images.pexels.com/photos/1631677/pexels-photo-1631677.jpeg");
+    background-repeat: no-repeat;
+    background-size: cover;       /* important */
+    background-position: center;  /* keeps focus in center */
+    position: relative;
+    border-radius: 20px;
+}
+
+.profileContainer_details{
+    padding-top: 4rem;
+}
+
+.card{
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+}
+
+.card_profileContainer > img{
+    width: 3.4rem;
+    height: 3.4rem;
+    object-fit: cover;
+}
+
+
+.workHistory{
+    padding-top: 2.2rem;
+}
+
+.workHistoryContainer{
+    display: flex;
+}
+
+.workHistoryCard{
+    min-width: fit-content;
+    margin-top: 1.2rem;
+    padding-inline: 2.5rem;
+    padding-block: 1rem;
+    border-radius: 10px;
+    box-shadow: 10px 10px 15px rgb(173, 173, 173);
+}
+
+/* .profileContainer_details{
+    outline: none;
+    border-style: none;
+    padding-inline: 10px;
+    padding-block: 10px;
+    width: fit-content;
+} */
+
+.nameEdit{
+    font-size: 1.5rem;
+    font-weight: bold;
+    border: none;
+}
+
+.connectBtn{
+    margin-top: 10px;
+    font-weight: bold;
+    width: 25%;
+    padding-inline: 0.8rem;
+    padding-block: 0.3rem;
+    background: rgb(236, 89, 31);
+    outline: none;
+    border: none;
+    color: white;
+    border-radius: 10px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.profilePhoto:hover{
+    transition:  all 0.4s;
+    background: black;
+    opacity: 0.4;
+    cursor: pointer;
+}
+
+.bioEdit{
+    border: none;
+    font-size: 1rem;
+    font-weight: 500;
+    padding-top: 10px;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.usernameEdit{
+    border: none;
+    outline: none;
+    font-size:medium;
+    
+}
+
+.addBtn{
+    padding-inline: 1.2rem;
+    padding-block: 1.2rem;
+    background: rgb(255, 254, 254);
+    color: black;
+    border: dotted;
+    border-radius: 10px;
+    cursor: pointer;
+    text-align: center;
+    margin-top: 20px;
+}
+
+
+.commentContainer{
+    position : fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    background: rgba(0, 0, 0, 0.7);
+    overflow: hidden;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+}
+
+.allCommentsContainer{
+    width: 40vw;
+    height: fit-content;
+    background: white;
+    border-radius: 10px;
+    position: absolute;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.inputField {
+    width: 100%;      /* Important */
+    flex: 1;
+    padding: 0.9rem 1.2rem;
+    border-radius: 8px;
+    border: 1px solid #d1d5db;
+    outline: none;
+    font-size: 0.95rem;
+}
+
+@media (max-width: 768px) {
+    .container{
+        padding: 1rem 0.75rem;
+    }
+
+    .backDropContainer{
+        height: 200px;
+    }
+
+    .profileOverlay{
+        left: 16px;
+        bottom: -50px;
+        width: 100px;
+        height: 100px;
+    }
+
+    .profileContainer_details{
+        padding-top: 3.5rem;
+    }
+
+    .workHistoryContainer{
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .workHistoryCard{
+        width: 100%;
+        padding-inline: 1.2rem;
+    }
+
+    .connectBtn{
+        width: 100%;
+    }
+
+    .allCommentsContainer{
+        width: 90vw;
+        padding: 1.5rem;
+    }
+}
