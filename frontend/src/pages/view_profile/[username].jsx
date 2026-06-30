@@ -85,20 +85,19 @@ export default function ViewProfilePage({userProfile}) {
           </div>
             
           <div className={styles.profileContainer_details}>
-                <div style={{display:'flex',gap:'1.2rem'}}>
-
-                    <div style={{flex:'0.8'}}>
-
-                          <div style={{display:'flex',width:'fileContent',gap:'1.2rem',alignItems:'center'}}>
-                              <h2>{userProfile.userId?.name}</h2>
-                              <p style={{color:'gray'}}>@{userProfile.userId?.username}</p>
+                <div className={styles.profileLayout}>
+                    <div className={styles.profileMain}>
+                          <div className={styles.nameRow}>
+                              <h2 className={styles.profileName}>{userProfile.userId?.name}</h2>
+                              <p className={styles.profileUsername}>@{userProfile.userId?.username}</p>
                           </div>
 
-                        <div style={{display:'flex',alignItems:'center',gap:'1rem'}}>
+                        <div className={styles.actionRow}>
                           {isCurrentUserInConnection ? 
-                              <button className={styles.connectedBtn}>{isConnectionNull ? "Pending" : "Connected"}</button> 
+                              <button type="button" className={styles.connectedBtn}>{isConnectionNull ? "Pending" : "Connected"}</button> 
                             :
                               <button
+                                type="button"
                                 onClick={async () => {
                                   const result = await dispatch(
                                     sendConnectionRequest({
@@ -106,8 +105,6 @@ export default function ViewProfilePage({userProfile}) {
                                       connectionId: userProfile.userId?._id,
                                     })
                                   )
-
-                                  // On success OR "req already sent", treat as connected and refresh connections
                                   const msg = result.payload?.message || ""
                                   if (
                                     result.meta?.requestStatus === "fulfilled" ||
@@ -126,49 +123,40 @@ export default function ViewProfilePage({userProfile}) {
                                 Connect
                               </button>  
                         }
-                          <div onClick={async()=>{
+                          <button type="button" onClick={async()=>{
                             const response = await clientServer.get(`/user/download_resume?id=${userProfile.userId._id}`)
                             window.open(`${BASE_URL}/uploads/${response.data.message}`,"_blank")
-                          }}
-                          
-                          style={{cursor:'pointer'}}>
-                          <svg style={{width:'2rem',display:'flex',height:'1.9rem',marginTop:'8px'}} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-  <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 7.5h-.75A2.25 2.25 0 0 0 4.5 9.75v7.5a2.25 2.25 0 0 0 2.25 2.25h7.5a2.25 2.25 0 0 0 2.25-2.25v-7.5a2.25 2.25 0 0 0-2.25-2.25h-.75m-6 3.75 3 3m0 0 3-3m-3 3V1.5m6 9h.75a2.25 2.25 0 0 1 2.25 2.25v7.5a2.25 2.25 0 0 1-2.25 2.25h-7.5a2.25 2.25 0 0 1-2.25-2.25v-.75" />
-</svg>
-
-                        </div>
+                          }} className={styles.downloadBtn} aria-label="Download resume">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 7.5h-.75A2.25 2.25 0 0 0 4.5 9.75v7.5a2.25 2.25 0 0 0 2.25 2.25h7.5a2.25 2.25 0 0 0 2.25-2.25v-7.5a2.25 2.25 0 0 0-2.25-2.25h-.75m-6 3.75 3 3m0 0 3-3m-3 3V1.5m6 9h.75a2.25 2.25 0 0 1 2.25 2.25v7.5a2.25 2.25 0 0 1-2.25 2.25h-7.5a2.25 2.25 0 0 1-2.25-2.25v-.75" />
+                          </svg>
+                        </button>
                     </div>
 
-                      
+                        <p className={styles.bio}>{userProfile.bio || 'No bio yet.'}</p>
 
-                        <div style={{paddingTop:'1.2rem'}}>
-                            <p>{userProfile.bio}</p>
-                        </div>
-
-                        <div className={styles.workHistory}>
-                              <h4>Work History</h4>
+                        <div className={styles.section}>
+                              <h4 className={styles.sectionTitle}>Work History</h4>
                           <div className={styles.workHistoryContainer}>
                                 {userProfile.pastWork.map((work,index)=>{
                                   return(
                                     <div key={index} className={styles.workHistoryCard}>
-                                      <p style={{fontWeight:"bold",display:'flex',alignItems:'center',gap:'0.8rem'}}>{work.company} - {work.position}</p>
-                                      <p>{work.years}</p>
+                                      <p>{work.company} — {work.position}</p>
+                                      <p>{work.years} {work.years === 1 ? 'year' : 'years'}</p>
                                     </div>
-                                  
                                   )
                                 })}
                           </div>
                       </div>
 
-                      <div className={styles.workHistory}>
-                        <h4>Education History</h4>
+                      <div className={styles.section}>
+                        <h4 className={styles.sectionTitle}>Education</h4>
                         <div className={styles.workHistoryContainer}>
                           {userProfile.education?.map((edu,index)=>{
                             return(
                               <div key={index} className={styles.workHistoryCard}>
-                                <p style={{fontWeight:"bold",display:'flex',alignItems:'center',gap:'0.8rem'}}>School: {edu.school}</p>
-                                <p style={{fontWeight:"bold",display:'flex',alignItems:'center',gap:'0.8rem'}}>Degree: {edu.degree}</p>
-                                <p style={{fontWeight:"bold",display:'flex',alignItems:'center',gap:'0.8rem'}}>Field: {edu.fieldOfStudy}</p>
+                                <p>{edu.school}</p>
+                                <p>{edu.degree} in {edu.fieldOfStudy}</p>
                               </div>
                             )
                           })}
@@ -176,29 +164,29 @@ export default function ViewProfilePage({userProfile}) {
                       </div>
                     </div>
 
-
-
-
-                    <div style={{flex:'0.2',width:'fileContent',alignItems:'center',padding:'0.8rem'}}>
-                        <h2>Recent Activity</h2>
-                        { userPosts.map((post)=>{
-                              return(
-                                <div key={post._id} className={styles.postCard}>
-                                      <div className={styles.card}>
-                                          <div className={styles.card_profileContainer}>
-
-                                              {post.media !== "" ? <img src={`${BASE_URL}/uploads/${post.media}`} alt={userProfile.userId?.name}/>
-                                                :
-                                                <div style={{width:'3.4rem',height:'3.4rem'}}></div>
-                                              }
-                                          </div>
-                                          <p>{post.body}</p>
-                                      </div>
-                                </div>
-                              )
-                        })}
-                    </div>
-
+                    <aside className={styles.profileSidebar}>
+                        <div className={styles.activityCard}>
+                          <h2 className={styles.activityTitle}>Recent Activity</h2>
+                          {userPosts.length === 0 && (
+                            <p style={{ fontSize: 'var(--font-size-sm)', color: 'var(--color-text-tertiary)' }}>No posts yet</p>
+                          )}
+                          { userPosts.map((post)=>{
+                                return(
+                                  <div key={post._id} className={styles.postCard}>
+                                        <div className={styles.card}>
+                                            <div className={styles.card_profileContainer}>
+                                                {post.media !== "" ? <img src={`${BASE_URL}/uploads/${post.media}`} alt=""/>
+                                                  :
+                                                  <div style={{width:'48px',height:'48px',background:'var(--color-bg-subtle)',borderRadius:'var(--radius-md)'}} />
+                                                }
+                                            </div>
+                                            <p>{post.body}</p>
+                                        </div>
+                                  </div>
+                                )
+                          })}
+                        </div>
+                    </aside>
                 </div>
           </div>
 

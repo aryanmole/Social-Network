@@ -26,9 +26,10 @@ export default function DiscoverPage() {
     <UserLayout>
         
         <DashboardLayout>
-            <h1>
-                DiscoverPage
-            </h1>
+            <div className={styles.pageHeader}>
+              <h1 className={styles.pageTitle}>Discover people</h1>
+              <p className={styles.pageSubtitle}>Explore professionals and expand your network</p>
+            </div>
             <div className={styles.allUserProfile}>
             {authState.all_profileFetched && authState.all_users.map((user)=>{  {/*all_users is coming from authreducer on 17 line*/}
               return(

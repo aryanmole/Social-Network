@@ -1,42 +1,84 @@
+.pageHeader {
+  margin-bottom: var(--space-6);
+}
+
+.pageTitle {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text);
+  letter-spacing: -0.02em;
+}
+
+.pageSubtitle {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin-top: var(--space-2);
+}
+
 .allUserProfile {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
-  gap: 20px;
-  margin-top: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: var(--space-4);
 }
 
 .userProfile {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 18px;
-  background: white;
-  border-radius: 12px;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  padding: var(--space-6) var(--space-4);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
   cursor: pointer;
-  box-shadow: 10px 10px 10px 0px rgba(0, 0, 0, 0.1);
+  transition: all var(--transition-base);
+  box-shadow: var(--shadow-sm);
 }
 
 .userProfile:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 18px rgba(0,0,0,0.15);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--color-accent-muted);
 }
 
 .userProfile img {
-  width: 90px;
-  height: 90px;
-  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  border-radius: var(--radius-full);
   object-fit: cover;
-  margin-bottom: 12px;
+  border: 3px solid var(--color-border-subtle);
+  margin-bottom: var(--space-4);
+  transition: border-color var(--transition-fast);
+}
+
+.userProfile:hover img {
+  border-color: var(--color-accent-muted);
 }
 
 .userProfile h1 {
-  font-size: 1.1rem;
-  margin: 6px 0 2px 0;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+  margin: 0 0 var(--space-1);
   text-align: center;
 }
 
 .userProfile p {
-  font-size: 0.9rem;
-  color: #666;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-tertiary);
+}
+
+@media (max-width: 768px) {
+  .allUserProfile {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: var(--space-3);
+  }
+
+  .userProfile {
+    padding: var(--space-4) var(--space-3);
+  }
+
+  .userProfile img {
+    width: 64px;
+    height: 64px;
+  }
 }

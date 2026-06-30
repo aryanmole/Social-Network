@@ -118,147 +118,100 @@ export default function ProfilePage() {
           </div>
 
           <div className={styles.profileContainer_details}>
-
-            <div style={{ display: "flex", gap: "1.2rem" }}>
-
-              <div style={{ flex: "0.8" }}>
-
-                <div style={{ display: "flex", width: "fit-content", gap: "1.2rem", alignItems: "center" }}>
+            <div className={styles.profileLayout}>
+              <div className={styles.profileMain}>
+                <div className={styles.nameRow}>
                   <input className={styles.nameEdit} type="text" value={userProfile.userId?.name || ''} onChange={(e)=> setUserProfile({
                     ...userProfile,
                     userId: { ...userProfile.userId, name: e.target.value }
                   })} />
-
                   <div>
-                  <span>@</span>
-                 <input className={styles.usernameEdit} style={{ color: "gray" }} type="text" value = {userProfile.userId?.username} onChange={(e)=>{
-                    setUserProfile({
-                      ...userProfile,
-                      userId: {...userProfile.userId, username: e.target.value}
-                    })
-                  }}/>
+                    <span>@</span>
+                    <input className={styles.usernameEdit} type="text" value={userProfile.userId?.username} readOnly />
                   </div>
-                  
                 </div>
 
-                
+                <textarea className={styles.bioEdit}
+                    value={userProfile.bio}
+                    onChange={(e)=>{
+                      setUserProfile({...userProfile,bio: e.target.value})
+                    }}
+                    rows={Math.max(3,Math.ceil((userProfile.bio?.length || 0) / 80))}
+                    placeholder="Write a short bio about yourself..."
+                />
 
-                
-                  <div>
-                    <textarea className={styles.bioEdit}
-                        value={userProfile.bio}
-                        onChange={(e)=>{
-                          setUserProfile({...userProfile,bio: e.target.value})
-                        }}
-                        rows={Math.max(3,Math.ceil(userProfile.bio.length / 80))}
-                        style={{width:'100%'}}
-                    >
-                      
-                    </textarea>
-                  </div>
-
-                <div className={styles.workHistory}>
-                  <h4>Work History</h4>
-
+                <div className={styles.section}>
+                  <h4 className={styles.sectionTitle}>Work History</h4>
                   <div className={styles.workHistoryContainer}>
                     {userProfile.pastWork.map((work, index) => (
                       <div key={index} className={styles.workHistoryCard}>
-                        <p style={{ fontWeight: "bold", display: "flex", alignItems: "center", gap: "0.8rem" }}>
-                          {work.company} - {work.position}
-                        </p>
-                        <p>{work.years}</p>
+                        <p>{work.company} — {work.position}</p>
+                        <p>{work.years} {work.years === 1 ? 'year' : 'years'}</p>
                       </div>
                     ))}
-
-
                     <div className={styles.addWork}>
-                    <button className={styles.addBtn} onClick={()=>{
-                          setIsModalOpen(true)
-                    }}>
-                      Add Work
-                    </button>
+                      <button type="button" className={styles.addBtn} onClick={()=>{
+                            setIsModalOpen(true)
+                      }}>
+                        + Add experience
+                      </button>
+                    </div>
                   </div>
-
-                  
-
                 </div>
 
-                  </div>
-
-                 <div className={styles.workHistory}>
-                  <h4>Education History</h4>
-
+                <div className={styles.section}>
+                  <h4 className={styles.sectionTitle}>Education</h4>
                   <div className={styles.workHistoryContainer}>
                     {userProfile.education?.map((edu, index) => (
                       <div key={index} className={styles.workHistoryCard}>
-                        <p style={{ fontWeight: "bold", display: "flex", alignItems: "center", gap: "0.8rem" }}>
-                          School: {edu.school}
-                        </p>
-                        <p style={{ fontWeight: "bold", display: "flex", alignItems: "center", gap: "0.8rem" }}>
-                          Degree: {edu.degree}
-                        </p>
-                        <p style={{ fontWeight: "bold", display: "flex", alignItems: "center", gap: "0.8rem" }}>
-                          Field: {edu.fieldOfStudy}</p>
+                        <p>{edu.school}</p>
+                        <p>{edu.degree} in {edu.fieldOfStudy}</p>
                       </div>
                     ))}
-
-
                     <div className={styles.addWork}>
-                    <button className={styles.addBtn} onClick={()=>{
-                          setIsEducation(true)
-                    }}>
-                      Add Education
-                    </button>
+                      <button type="button" className={styles.addBtn} onClick={()=>{
+                            setIsEducation(true)
+                      }}>
+                        + Add education
+                      </button>
+                    </div>
                   </div>
-
-                  
-
                 </div>
 
-                  {userProfile != authState.user && 
-                  
-                  <div onClick={()=>{
+                {userProfile != authState.user && 
+                  <button type="button" onClick={()=>{
                     updateProfileData()
                   }} className={styles.connectBtn}>
-                        Update 
-                    </div>}
-
-                  </div>
-
+                    Save changes
+                  </button>}
               </div>
 
-              <div style={{ flex: "0.2", width: "fit-content", padding: "0.8rem" }}>
-                <h2>Recent Activity</h2>
-
-                {userPosts.map((post) => (
-                  <div key={post._id} className={styles.postCard}>
-
-                    <div className={styles.card}>
-
-                      <div className={styles.card_profileContainer}>
-
-                        {post.media !== "" ? (
-                          <img
-                            src={`${BASE_URL}/uploads/${post.media}`}
-                            alt={userProfile.userId?.name}
-                          />
-                        ) : (
-                          <div style={{ width: "3.4rem", height: "3.4rem" }}></div>
-                        )}
-
+              <aside className={styles.profileSidebar}>
+                <div className={styles.activityCard}>
+                  <h2 className={styles.activityTitle}>Recent Activity</h2>
+                  {userPosts.length === 0 && (
+                    <p style={{ fontSize: 'var(--font-size-sm)', color: 'var(--color-text-tertiary)' }}>No posts yet</p>
+                  )}
+                  {userPosts.map((post) => (
+                    <div key={post._id} className={styles.postCard}>
+                      <div className={styles.card}>
+                        <div className={styles.card_profileContainer}>
+                          {post.media !== "" ? (
+                            <img
+                              src={`${BASE_URL}/uploads/${post.media}`}
+                              alt=""
+                            />
+                          ) : (
+                            <div style={{ width: "48px", height: "48px", background: 'var(--color-bg-subtle)', borderRadius: 'var(--radius-md)' }} />
+                          )}
+                        </div>
+                        <p>{post.body}</p>
                       </div>
-
-                      <p>{post.body}</p>
-
                     </div>
-
-                  </div>
-                ))}
-
-              </div>
-
+                  ))}
+                </div>
+              </aside>
             </div>
-
           </div>
 
         </div>
@@ -266,61 +219,37 @@ export default function ProfilePage() {
 
         
           {IsModalOpen && 
-                    <div  onClick={() => {   // this is from posAction when we click outside the box it will automatically become normal
-                          setIsModalOpen(false)
-                     }}
-          
-                    className={styles.commentContainer}>
-            
-            <div onClick={(e)=>{
-                e.stopPropagation() //when we click on white box it should not go back to normal
-              }}
-            className={styles.allCommentsContainer}>
-
-            <input onChange={(e)=>{setComapnyName(e.target.value)}} type='text' placeholder='Enter Company' className={styles.inputField}></input>
-
-            <input onChange={(e)=>{setPostion(e.target.value)}} type='text' placeholder='Enter Position' className={styles.inputField}></input>
-          
-
-            <input onChange={(e)=>{setYears(e.target.value)}} type='number' placeholder='Years' className={styles.inputField}></input>
-                <div onClick={()=>{
+                    <div onClick={() => setIsModalOpen(false)} className={styles.commentContainer} role="dialog" aria-label="Add work experience">
+            <div onClick={(e)=> e.stopPropagation()} className={styles.allCommentsContainer}>
+            <h3 className={styles.modalTitle}>Add work experience</h3>
+            <input onChange={(e)=>{setComapnyName(e.target.value)}} type='text' placeholder='Company name' className={styles.inputField} />
+            <input onChange={(e)=>{setPostion(e.target.value)}} type='text' placeholder='Position / title' className={styles.inputField} />
+            <input onChange={(e)=>{setYears(e.target.value)}} type='number' placeholder='Years of experience' className={styles.inputField} />
+                <button type="button" onClick={()=>{
                   const newWork = { company: companyName, position: postion, years: years }
-
                     setUserProfile({...userProfile,pastWork:[...userProfile.pastWork,newWork]})
                     setIsModalOpen(false)
                   }} className={styles.connectBtn}>
-                        Add Work 
-                    </div>
+                        Add experience
+                    </button>
             </div>
           </div>
                 }
 
             {IsEducation && 
-                <div  onClick={() => {   // this is from posAction when we click outside the box it will automatically become normal
-                          setIsEducation(false)
-                     }}
-          
-                    className={styles.commentContainer}>
-            
-            <div onClick={(e)=>{
-                e.stopPropagation() //when we click on white box it should not go back to normal
-              }}
-            className={styles.allCommentsContainer}>
-
-            <input onChange={(e)=>{setSchoolName(e.target.value)}} type='text' placeholder='Enter School' className={styles.inputField}></input>
-
-            <input onChange={(e)=>{setDegreeName(e.target.value)}} type='text' placeholder='Enter Degree' className={styles.inputField}></input>
-          
-
-            <input onChange={(e)=>{setFieldName(e.target.value)}} type='text' placeholder='Enter Field' className={styles.inputField}></input>
-                <div onClick={()=>{
+                <div onClick={() => setIsEducation(false)} className={styles.commentContainer} role="dialog" aria-label="Add education">
+            <div onClick={(e)=> e.stopPropagation()} className={styles.allCommentsContainer}>
+            <h3 className={styles.modalTitle}>Add education</h3>
+            <input onChange={(e)=>{setSchoolName(e.target.value)}} type='text' placeholder='School / university' className={styles.inputField} />
+            <input onChange={(e)=>{setDegreeName(e.target.value)}} type='text' placeholder='Degree' className={styles.inputField} />
+            <input onChange={(e)=>{setFieldName(e.target.value)}} type='text' placeholder='Field of study' className={styles.inputField} />
+                <button type="button" onClick={()=>{
                   const newWork = { school: schoolName, degree: degreeName, fieldOfStudy: fieldName }
-
                     setUserProfile({...userProfile,education:[...userProfile.education,newWork]})
                     setIsEducation(false)
                   }} className={styles.connectBtn}>
-                        Add Education 
-                    </div>
+                        Add education
+                    </button>
             </div>
           </div>
           }

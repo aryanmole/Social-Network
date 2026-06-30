@@ -8,28 +8,22 @@ import styles from './index.module.css'
 import { useRouter } from 'next/router'
 
 export default function MyConnectionsPage() {
-
-  const dispatch= useDispatch()
-
-  const authState = useSelector((state)=>state.auth)
-
+  const dispatch = useDispatch()
+  const authState = useSelector((state) => state.auth)
   const router = useRouter()
 
   const pendingRequests = (authState.connectionRequest || []).filter(
     (connection) => connection.status_accepted === null || connection.status_accepted === false
   )
 
-  // Accepted where I am the receiver (connectionId === me)
   const incomingAccepted = (authState.connectionRequest || []).filter(
     (connection) => connection.status_accepted === true
   )
 
-  // Accepted where I am the sender (userId === me)
   const outgoingAccepted = (authState.connections || []).filter(
     (connection) => connection.status_accepted === true
   )
 
-  // Normalize to always have otherUser populated for UI
   const acceptedConnections = [
     ...incomingAccepted.map((conn) => ({
       ...conn,
@@ -45,91 +39,90 @@ export default function MyConnectionsPage() {
       index === self.findIndex((c) => String(c._id) === String(conn._id))
     )
 
-  useEffect(()=>{
+  useEffect(() => {
     const token = localStorage.getItem('token')
     if (!token) return
-    dispatch(getMyConnectionRequest({token}))
-    dispatch(getConnectionsRequest({token}))
-  },[dispatch])
-
-  useEffect(()=>{
-    if(authState.connectionRequest.length !==0 ){
-      console.log(authState.connectionRequest)
-    }
-  },[authState.connectionRequest])
+    dispatch(getMyConnectionRequest({ token }))
+    dispatch(getConnectionsRequest({ token }))
+  }, [dispatch])
 
   return (
     <UserLayout>
-    
-          <DashboardLayout>
-            <div style={{display:'flex',flexDirection:'column',gap:'0.6rem'}}>
-            <h1 className={styles.title}>
-              My Connections</h1>
+      <DashboardLayout>
+        <div className={styles.page}>
+          <div className={styles.pageHeader}>
+            <h1 className={styles.title}>My Network</h1>
+          </div>
 
-              {pendingRequests.length === 0 && (
-                <div style={{textAlign:'center',marginTop:'1rem',color:'#666'}}>
-                  <h3>No pending requests</h3>
-                </div>
-              )}
-
-              {pendingRequests.map((user,index)=>{
-                return(
-                  <div onClick={()=>{
-                      router.push(`/view_profile/${user.userId.username}`)
-                  }} 
-                  
-                  className={styles.userCard} key={user._id || index}>
-                      <div  style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
-                          <img style={{width:'6.6rem',borderRadius:'50%'}} src={`${BASE_URL}/uploads/${user.userId.profilePicture}`} alt="" />
-                      </div>
-                      <div className={styles.userInfo}>
-                          <h3>{user.userId.name}</h3>
-                          <p>@{user.userId.username}</p>
-                      </div>
-                      <button onClick={(e)=>{
-                        e.stopPropagation()
-
-                        dispatch(AcceptConnectionRequest({
-                          token:localStorage.getItem('token'),
-                          connectionId:user._id,
-                          action:"accept"
-                        }))
-                      }}
-                       className={styles.connectedBtn}>Accept</button> 
+          <section className={styles.section}>
+            <h2 className={styles.sectionTitle}>Pending invitations</h2>
+            {pendingRequests.length === 0 ? (
+              <div className={styles.emptyState}>No pending requests</div>
+            ) : (
+              pendingRequests.map((user, index) => (
+                <div
+                  onClick={() => router.push(`/view_profile/${user.userId.username}`)}
+                  className={styles.userCard}
+                  key={user._id || index}
+                >
+                  <img
+                    className={styles.profileImage}
+                    src={`${BASE_URL}/uploads/${user.userId.profilePicture}`}
+                    alt={user.userId.name}
+                  />
+                  <div className={styles.userInfo}>
+                    <h3>{user.userId.name}</h3>
+                    <p>@{user.userId.username}</p>
                   </div>
-                )
-              })}
-
-            <h2 style={{marginTop:'1.5rem'}}>My Network</h2>
-            {acceptedConnections.length === 0 && (
-              <div style={{textAlign:'center',marginTop:'1rem',color:'#666'}}>
-                <h3>No connections yet</h3>
-              </div>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      dispatch(AcceptConnectionRequest({
+                        token: localStorage.getItem('token'),
+                        connectionId: user._id,
+                        action: "accept"
+                      }))
+                    }}
+                    className={styles.connectedBtn}
+                  >
+                    Accept
+                  </button>
+                </div>
+              ))
             )}
-            {acceptedConnections.map((conn,index)=>{
-              const otherUser = conn.otherUser
-              if (!otherUser) return null
-              return(
-                <div onClick={()=>{
-                    router.push(`/view_profile/${otherUser.username}`)
-                }} 
-                
-                className={styles.userCard} key={conn._id || index}>
-                    <div  style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
-                        <img style={{width:'6.6rem',borderRadius:'50%'}} src={`${BASE_URL}/uploads/${otherUser.profilePicture || 'default.jpg'}`} alt="" />
-                    </div>
+          </section>
+
+          <section className={styles.section}>
+            <h2 className={styles.sectionTitle}>Your connections</h2>
+            {acceptedConnections.length === 0 ? (
+              <div className={styles.emptyState}>No connections yet. Start by discovering people!</div>
+            ) : (
+              acceptedConnections.map((conn, index) => {
+                const otherUser = conn.otherUser
+                if (!otherUser) return null
+                return (
+                  <div
+                    onClick={() => router.push(`/view_profile/${otherUser.username}`)}
+                    className={styles.userCard}
+                    key={conn._id || index}
+                  >
+                    <img
+                      className={styles.profileImage}
+                      src={`${BASE_URL}/uploads/${otherUser.profilePicture || 'default.jpg'}`}
+                      alt={otherUser.name}
+                    />
                     <div className={styles.userInfo}>
-                        <h3>{otherUser.name}</h3>
-                        <p>@{otherUser.username}</p>
+                      <h3>{otherUser.name}</h3>
+                      <p>@{otherUser.username}</p>
                     </div>
                     <span className={styles.connectedLabel}>Connected</span>
-                </div>
-              )
-            })}
-
-            </div>
-          </DashboardLayout>
-    
-        </UserLayout>
+                  </div>
+                )
+              })
+            )}
+          </section>
+        </div>
+      </DashboardLayout>
+    </UserLayout>
   )
 }
